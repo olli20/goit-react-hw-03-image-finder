@@ -1,5 +1,5 @@
 import {Component} from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import styles from './search-bar.module.scss';
 
@@ -18,8 +18,8 @@ class SearchBar extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         console.log('Submit ', this.state.search);
-        // const {onSubmit} = this.props;
-        // onSubmit({...this.state});
+        const {onSubmit} = this.props;
+        onSubmit({...this.state});
         this.reset();
     }
 
@@ -55,6 +55,6 @@ class SearchBar extends Component {
 
 export default SearchBar;
 
-// SearchBar.propTypes = {
-//     onSubmit: PropTypes.func.isRequired,
-// }
+SearchBar.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+}

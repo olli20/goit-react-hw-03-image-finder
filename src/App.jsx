@@ -2,42 +2,65 @@ import {Component} from 'react';
 
 import SearchBar from './modules/SearchBar';
 import ImageGallery from './modules/ImageGallery';
+import Button from './shared/components/Button';
+
+import {searchImages} from './shared/services/gallery-api';
 
 import styles from './app.module.scss';
 
 class App extends Component {
   state = {
     search: "",
-    items: [
-      {
-        id: 1,
-        webformatURL: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-        largeImageURL: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-      },
-      {
-        id: 2,
-        webformatURL: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-        largeImageURL: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-      },
-      {
-        id: 3,
-        webformatURL: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-        largeImageURL: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-      },
-      {
-        id: 4,
-        webformatURL: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-        largeImageURL: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-      }
-    ],
+    items: [],
     loading: false,
+    error: null,
+    page: 1,
+    showModal: false,
+    details: null,
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {search, page} = this.state;
+    if(prevState.search !== search || prevState.page !== page) {
+        this.fetchImages();
+    }
+  }
+
+  async fetchImages() {
+    try {
+        this.setState({loading: true})
+        const {search, page} = this.state;
+        const data = await searchImages(search, page);
+        console.log(data);
+        this.setState(({items}) => ({
+            items: [...items, ...data]
+        }))
+      }
+    catch(error) {
+        this.setState({error: error.message})
+    }
+    finally {
+      this.setState({loading: false})
+    }
+  }
+
+  searchImages = ({search}) => {
+    this.setState({search, items: [], page: 1});
+  }
+
+  loadMore = () => {
+    this.setState(({page}) => ({page: page + 1}))
   }
 
   render() {
+    const {items, loading} = this.state;
+    const {searchImages, loadMore} = this;
     return(
       <div className={styles.app}>
-        <SearchBar />
-        <ImageGallery items={this.state.items} />
+        <SearchBar onSubmit={searchImages} />
+        <ImageGallery items={items} />
+        {loading && <p>Loading</p>}
+        {Boolean(items.length) && <Button onClick={loadMore} type={"button"} text={"Load more"}></Button>}
       </div>
     )
   }
