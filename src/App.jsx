@@ -3,6 +3,7 @@ import {Component} from 'react';
 import SearchBar from './modules/SearchBar';
 import ImageGallery from './modules/ImageGallery';
 import Button from './shared/components/Button';
+import Modal from './shared/components/Modal';
 
 import {searchImages} from './shared/services/gallery-api';
 
@@ -52,15 +53,31 @@ class App extends Component {
     this.setState(({page}) => ({page: page + 1}))
   }
 
+  showImage = (largeImageURL) => {
+    this.setState({
+      details: largeImageURL,
+      showModal: true,
+    })
+  }
+
+  closeModal = () => {
+    this.setState({
+        details: null,
+        showModal: false,
+    })
+}
+
   render() {
-    const {items, loading} = this.state;
-    const {searchImages, loadMore} = this;
+    const {items, loading, details, showModal} = this.state;
+    const {searchImages, loadMore, showImage, closeModal} = this;
     return(
       <div className={styles.app}>
+        {showModal && <Modal onClose={closeModal}><img src={details} alt="" /></Modal>}
         <SearchBar onSubmit={searchImages} />
-        <ImageGallery items={items} />
+        <ImageGallery items={items} showImage={showImage} />
         {loading && <p>Loading</p>}
         {Boolean(items.length) && <Button onClick={loadMore} type={"button"} text={"Load more"}></Button>}
+        
       </div>
     )
   }

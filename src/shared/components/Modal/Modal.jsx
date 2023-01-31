@@ -16,8 +16,8 @@ class Modal extends Component {
     }
 
     closeModal = ({target, currentTarget, code}) => {
-        if(target === currentTarget || code === "Escape") {
-            // this.props.onClose();
+        if(code === "Escape") {   // target === currentTarget || 
+            this.props.onClose();
         }
     }
 
@@ -26,8 +26,8 @@ class Modal extends Component {
         const {closeModal} = this;
         return (
             createPortal(
-                <div onClick={closeModal} className={styles.overlay}>
-                    <div className={styles.modal}>
+                <div className={styles.overlay}>
+                    <div onClick={closeModal} className={styles.modal}>
                         {children}
                     </div>
                 </div>,
