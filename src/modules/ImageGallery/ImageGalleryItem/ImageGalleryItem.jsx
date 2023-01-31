@@ -1,3 +1,5 @@
+// import PropTypes from 'prop-types';
+
 import styles from './image-gallery-item.module.scss';
 
 const ImageGalleryItem = ({webformatURL}) => {

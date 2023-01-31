@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 
 import styles from './button.module.scss';
 
-const Button = ({text, type, onClick}) => {
+const Button = ({text, type}) => {
     return(
-        <button onClick={onClick} type={type}>{text}</button>
+        <button type={type}>{text}</button>
     )
 }
 

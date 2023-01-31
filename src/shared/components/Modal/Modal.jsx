@@ -17,12 +17,12 @@ class Modal extends Component {
 
     closeModal = ({target, currentTarget, code}) => {
         if(target === currentTarget || code === "Escape") {
-            this.props.onClose();
+            // this.props.onClose();
         }
     }
 
     render() {
-        const {children, onClose} = this.props;
+        const {children} = this.props;
         const {closeModal} = this;
         return (
             createPortal(
