@@ -4,6 +4,7 @@ import SearchBar from './modules/SearchBar';
 import ImageGallery from './modules/ImageGallery';
 import Button from './shared/components/Button';
 import Modal from './shared/components/Modal';
+import Loader from './shared/components/Loader';
 
 import {searchImages} from './shared/services/gallery-api';
 
@@ -32,7 +33,6 @@ class App extends Component {
         this.setState({loading: true})
         const {search, page} = this.state;
         const data = await searchImages(search, page);
-        console.log(data);
         this.setState(({items}) => ({
             items: [...items, ...data]
         }))
@@ -68,16 +68,15 @@ class App extends Component {
 }
 
   render() {
-    const {items, loading, details, showModal} = this.state;
+    const {items, loading, details, showModal, search} = this.state;
     const {searchImages, loadMore, showImage, closeModal} = this;
     return(
       <div className={styles.app}>
-        {showModal && <Modal onClose={closeModal}><img src={details} alt="" /></Modal>}
+        {showModal && <Modal onClose={closeModal}><img src={details} alt={search} /></Modal>}
         <SearchBar onSubmit={searchImages} />
         <ImageGallery items={items} showImage={showImage} />
-        {loading && <p>Loading</p>}
-        {Boolean(items.length) && <Button onClick={loadMore} type={"button"} text={"Load more"}></Button>}
-        
+        {loading && <Loader />}
+        {Boolean(items.length) && <Button onClick={loadMore}>Load more</Button>}
       </div>
     )
   }

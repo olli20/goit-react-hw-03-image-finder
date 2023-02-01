@@ -2,15 +2,21 @@ import PropTypes from 'prop-types';
 
 import styles from './button.module.scss';
 
-const Button = ({text, type, onClick}) => {
+const Button = ({children, type, onClick}) => {
     return(
-        <button className={styles.button} onClick={onClick} type={type}>{text}</button>
+        <div className={styles.wrapper}>
+            <button className={styles.button} onClick={onClick} type={type}>{children}</button>
+        </div>
     )
 }
 
 export default Button;
 
+Button.defaultProps = {
+    type: "button",
+}
+
 Button.propTypes = {
     onClick: PropTypes.func.isRequired,
-    text: PropTypes.string.isRequired,
+    children: PropTypes.string.isRequired,
 }

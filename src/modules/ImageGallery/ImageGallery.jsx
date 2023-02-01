@@ -1,13 +1,17 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import ImageGalleryItem from './ImageGalleryItem';
 
 import styles from './image-gallery.module.scss';
 
 const ImageGallery = ({items, showImage}) => {
-    const elements = items.map(({id, webformatURL, largeImageURL}) => 
-        <ImageGalleryItem key={id} showImage={showImage} webformatURL={webformatURL} largeImageURL={largeImageURL} />)
-    console.log(elements);
+    const elements = items.map(({id, webformatURL, largeImageURL, tags}) => 
+        <ImageGalleryItem 
+        key={id} 
+        showImage={showImage} 
+        webformatURL={webformatURL} 
+        largeImageURL={largeImageURL}
+        tags={tags} />)
     return(
         <ul className={styles.gallery}>
             {elements}
@@ -16,3 +20,7 @@ const ImageGallery = ({items, showImage}) => {
 }
 
 export default ImageGallery;
+
+ImageGallery.propTypes ={
+    showImage: PropTypes.func.isRequired,
+}

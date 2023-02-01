@@ -1,6 +1,8 @@
 import {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import { IoSearchSharp } from "react-icons/io5";
+
 import styles from './search-bar.module.scss';
 
 class SearchBar extends Component {
@@ -17,7 +19,6 @@ class SearchBar extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log('Submit ', this.state.search);
         const {onSubmit} = this.props;
         onSubmit({...this.state});
         this.reset();
@@ -37,7 +38,8 @@ class SearchBar extends Component {
             <header className={styles.searchBar}>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <button type="submit" className={styles.button}>
-                        <span className={styles.buttonLabel}>Search</span>
+                        <IoSearchSharp />
+                        {/* <span className={styles.buttonLabel}>Search</span> */}
                     </button>
                     <input        
                         className={styles.input}
