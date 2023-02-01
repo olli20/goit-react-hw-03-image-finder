@@ -39,7 +39,6 @@ class SearchBar extends Component {
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <button type="submit" className={styles.button}>
                         <IoSearchSharp />
-                        {/* <span className={styles.buttonLabel}>Search</span> */}
                     </button>
                     <input        
                         className={styles.input}

@@ -1,5 +1,8 @@
 import {Component} from 'react';
 import {createPortal} from 'react-dom';
+import PropTypes from 'prop-types';
+
+import { IoCloseCircleOutline } from "react-icons/io5";
 
 import styles from './modal.module.scss';
 
@@ -22,12 +25,13 @@ class Modal extends Component {
     }
 
     render() {
-        const {children} = this.props;
+        const {children, onClose} = this.props;
         const {closeModal} = this;
         return (
             createPortal(
                 <div onClick={closeModal} className={styles.overlay}>
                     <div className={styles.modal}>
+                        <IoCloseCircleOutline className={styles.close} onClick={onClose} />
                         {children}
                     </div>
                 </div>,
@@ -38,3 +42,8 @@ class Modal extends Component {
 }
 
 export default Modal;
+
+Modal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    children: PropTypes.element.isRequired,
+}

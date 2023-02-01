@@ -5,6 +5,7 @@ import ImageGallery from './modules/ImageGallery';
 import Button from './shared/components/Button';
 import Modal from './shared/components/Modal';
 import Loader from './shared/components/Loader';
+import Error from './shared/components/Error';
 
 import {searchImages} from './shared/services/gallery-api';
 
@@ -75,7 +76,7 @@ class App extends Component {
 }
 
   render() {
-    const {items, loading, details, showModal, totalHits} = this.state;
+    const {items, loading, details, showModal, totalHits, error} = this.state;
     const {searchImages, loadMore, showImage, closeModal} = this;
     return(
       <div className={styles.app}>
@@ -84,6 +85,7 @@ class App extends Component {
         <ImageGallery items={items} showImage={showImage} />
         {loading && <Loader />}
         {(totalHits >= 20) && <Button onClick={loadMore}>Load more</Button>}
+        {error && <Error />}
       </div>
     )
   }
