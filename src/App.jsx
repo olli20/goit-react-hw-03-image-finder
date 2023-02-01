@@ -17,6 +17,7 @@ class App extends Component {
     loading: false,
     error: null,
     page: 1,
+    totalHits: null,
     showModal: false,
     details: null,
   }
@@ -31,11 +32,14 @@ class App extends Component {
   async fetchImages() {
     try {
         this.setState({loading: true})
-        const {search, page} = this.state;
+        const {search, page, totalHits} = this.state;
         const data = await searchImages(search, page);
         this.setState(({items}) => ({
-            items: [...items, ...data]
+            items: [...items, ...data.hits],
         }))
+        if(!totalHits) {
+          this.setState({totalHits: data.totalHits})
+        }
       }
     catch(error) {
         this.setState({error: error.message})
@@ -46,16 +50,19 @@ class App extends Component {
   }
 
   searchImages = ({search}) => {
-    this.setState({search, items: [], page: 1});
+    this.setState({search, items: [], page: 1, totalHits: null});
   }
 
   loadMore = () => {
-    this.setState(({page}) => ({page: page + 1}))
+    this.setState(({page, totalHits}) => ({page: page + 1, totalHits: totalHits - 20}))
   }
 
-  showImage = (largeImageURL) => {
+  showImage = (tags, largeImageURL) => {
     this.setState({
-      details: largeImageURL,
+      details: {
+        tags,
+        largeImageURL,
+      },
       showModal: true,
     })
   }
@@ -68,15 +75,15 @@ class App extends Component {
 }
 
   render() {
-    const {items, loading, details, showModal, search} = this.state;
+    const {items, loading, details, showModal, totalHits} = this.state;
     const {searchImages, loadMore, showImage, closeModal} = this;
     return(
       <div className={styles.app}>
-        {showModal && <Modal onClose={closeModal}><img src={details} alt={search} /></Modal>}
+        {showModal && <Modal onClose={closeModal}><img src={details.largeImageURL} alt={details.tags} /></Modal>}
         <SearchBar onSubmit={searchImages} />
         <ImageGallery items={items} showImage={showImage} />
         {loading && <Loader />}
-        {Boolean(items.length) && <Button onClick={loadMore}>Load more</Button>}
+        {(totalHits >= 20) && <Button onClick={loadMore}>Load more</Button>}
       </div>
     )
   }
