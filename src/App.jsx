@@ -5,7 +5,7 @@ import ImageGallery from './modules/ImageGallery';
 import Button from './shared/components/Button';
 import Modal from './shared/components/Modal';
 import Loader from './shared/components/Loader';
-import Error from './shared/components/Error';
+import Message from './shared/components/Message';
 
 import {searchImages} from './shared/services/gallery-api';
 
@@ -85,7 +85,7 @@ class App extends Component {
         <ImageGallery items={items} showImage={showImage} />
         {loading && <Loader />}
         {(totalHits >= 20) && <Button onClick={loadMore}>Load more</Button>}
-        {error && <Error />}
+        {error && <Message text="Something went wrong..." />}
       </div>
     )
   }
