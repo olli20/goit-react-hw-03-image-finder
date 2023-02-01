@@ -7,7 +7,6 @@ const Message = ({text}) => {
         <div className={styles.wrapper}>
             <p className={styles.message}>{text}</p>
         </div>
-        
     )
 }
 

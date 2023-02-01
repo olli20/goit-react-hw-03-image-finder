@@ -12,7 +12,7 @@ const ImageGallery = ({items, showImage}) => {
         webformatURL={webformatURL} 
         largeImageURL={largeImageURL}
         tags={tags} />)
-    return(
+    return (
         <ul className={styles.gallery}>
             {elements}
         </ul>

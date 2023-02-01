@@ -78,6 +78,7 @@ class App extends Component {
   render() {
     const {items, loading, details, showModal, totalHits, error} = this.state;
     const {searchImages, loadMore, showImage, closeModal} = this;
+    
     return(
       <div className={styles.app}>
         {showModal && <Modal onClose={closeModal}><img src={details.largeImageURL} alt={details.tags} /></Modal>}
